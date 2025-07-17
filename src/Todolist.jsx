@@ -26,11 +26,21 @@ export default function Todolist() {
     setadd(add.filter((item) => item.id !== id));
   }
 
-  function reset(){
-    setadd([])
-
+  function reset() {
+    setadd([]);
   }
 
+  function donetask(id) {
+    setadd((add) => {
+      return add.map((a) => {
+        if (a.id === id) {
+          return { ...a, done : true };
+        } else {
+          return a;
+        }
+      });
+    });
+  }
   return (
     <>
       <h2>Todo List</h2>
@@ -40,24 +50,31 @@ export default function Todolist() {
         value={task}
         onChange={tochange}
       />
-      <button onClick={adding}>Add</button>&nbsp;&nbsp;&nbsp;<button onClick={reset}>Reset</button>
-
+      <button onClick={adding}>Add</button>&nbsp;&nbsp;&nbsp;
+      <button onClick={reset}>Reset</button>
       <table
         border="1"
-        style={{ marginTop: "1rem", minWidth: "70%", textAlign: "left", border:"2px solid #ccc"}}
+        style={{
+          marginTop: "1rem",
+          minWidth: "70%",
+          textAlign: "left",
+          border: "2px solid #ccc",
+        }}
       >
         <thead>
           <tr>
-            <th style={{width:"13rem"}}>List</th>
-            <th >Action</th>
+            <th style={{ width: "13rem" }}>List</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {add.map((item) => (
             <tr key={item.id}>
-              <td>{item.text}</td>
+              <td style ={{textDecoration: item.done ? "line-through" : "none"}} >{item.text}</td>
               <td>
                 <button onClick={() => delet(item.id)}>Delete</button>
+                &nbsp;&nbsp;&nbsp;
+                <button  onClick={() => donetask(item.id)}>Done</button>
               </td>
             </tr>
           ))}
